@@ -162,6 +162,7 @@ uint8_t Protocol_Parse(uint8_t * message)
 	uint8_t id;
 	int32_t ind = 0;
 	uint8_t command = 0;
+	uint8_t brightness_main = 0;
 	start = message[counter++];
 	
 	switch(start)
@@ -230,19 +231,19 @@ uint8_t Protocol_Parse(uint8_t * message)
 		
 		*/
 		case COMM_CUSTOM_APP_DATA: 
-			if(message[id + 1] == 102) //Magic number specificly for the Floatwheel light control module (Float package uses 101 - dont interfere with the float package)
+			if(message[counter++] == 102) //Magic number specificly for the Floatwheel light control module (Float package uses 101 - dont interfere with the float package)
 			{
-				command = message[id + 2];
+				command = message[counter++];
 				switch(command){
 					case 0: 
-						uint8_t brightness_main = message[id + 3];
+						brightness_main = message[counter++];
 					case 1: 
-						WS2812_Measure = message[id + 3];
+						WS2812_Measure = message[counter++];
 						
 						
 				}
 			} else {
-				return; 
+				return 0; 
 			}
 				
 
